@@ -11,8 +11,10 @@ Route::get('/', function () {
 });
 
 // route for books
-Route::get('/books', [BookController::class, 'index']);
-Route::get('/books/{id}', [BookController::class, 'show']);
+// Route::get('/books', [BookController::class, 'index']);
+// Route::get('/books/{id}', [BookController::class, 'show']);
+
+Route::resource('books', BookController::class);
 
 // route for categories
 Route::get('/categories', [CategoryController::class, 'index']);

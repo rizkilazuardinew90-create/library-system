@@ -7,75 +7,79 @@ use App\Models\Book;
 
 class BookController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     */
     public function index()
     {
         $title = 'Daftar Buku yang Tersedia';
-        // $books = [
-        //     [
-        //         'title' => 'Stoicism (Ancient Philosophies)',
-        //         'author' => 'John Sellars',
-        //         'year' => 2006
-        //         ],
-        //     [
-        //         'title' => 'Filosofi Teras',
-        //         'author' => 'Henry Manampiring',
-        //         'year' => 2014
-        //         ],
-        //     [
-        //         'title' => 'Veronica Decides to Die',
-        //         'author' => 'Paulo Coelho',
-        //         'year' => 1998
-        //         ],
-        //     [
-        //         'title' => 'Happiness for People Who Can\'t Stand Positive Thinking',
-        //         'author' => 'Oliver Burkeman',
-        //         'year' => 2012
-        //         ],
-        //     [
-        //         'title' => 'Think Like a Roman Emperor: The Stoic Philosophy of Marcus Aurelius',
-        //         'author' => 'Donald Robertson',
-        //         'year' => 2020
-        //         ]
-        // ];
-
         $books = Book::all();
-
-        return view('books.index', compact('books', 'title'));
+        return view('books.index', compact('title', 'books'));
     }
 
-    public function show($id)
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        return view('books.create');
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        Book::create([
+            'title' => $request->title,
+            'author' => $request->author,
+            'year' => $request->year,
+            'stock' => $request->stock
+        ]);
+
+        return redirect()->route('books.index');
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(Book $book)
     {
         $title = 'Detail Buku';
-        // $books = [
-        //     1 => [
-        //         'title' => 'Stoicism (Ancient Philosophies)',
-        //         'author' => 'John Sellars',
-        //         'year' => 2006
-        //     ],
-        //     2 => [
-        //         'title' => 'Filosofi Teras',
-        //         'author' => 'Henry Manampiring',
-        //         'year' => 2014
-        //     ],
-        //     3 => [
-        //         'title' => 'Veronica Decides to Die',
-        //         'author' => 'Paulo Coelho',
-        //         'year' => 1998
-        //     ],
-        //     4 => [
-        //         'title' => 'Happiness for People Who Can\'t Stand Positive Thinking',
-        //         'author' => 'Oliver Burkeman',
-        //         'year' => 2012
-        //     ],
-        //     5 => [
-        //         'title' => 'Think Like a Roman Emperor: The Stoic Philosophy of Marcus Aurelius',
-        //         'author' => 'Donald Robertson',
-        //         'year' => 2020
-        //     ]
-        // ];
 
-        $book = Book::find($id);
+        return view('books.show', compact('title', 'book'));
+    }
 
-        return view('books.show', compact('title', 'book', 'id'));
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(Book $book)
+    {
+        return view('books.edit', compact('book'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, Book $book)
+    {
+        $book->update([
+            'title' => $request->title,
+            'author' => $request->author,
+            'year' => $request->year,
+            'stock' => $request->stock
+        ]);
+
+        return redirect()->route('books.index');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Book $book)
+    {
+        $book->delete();
+
+        return redirect()->route('books.index');
     }
 }
