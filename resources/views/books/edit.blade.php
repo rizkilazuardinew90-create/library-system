@@ -1,13 +1,70 @@
-<form action="{{ route('books.update', $book) }}"
-method="POST">
+@extends('layouts.app')
+@section('title', 'Edit Buku')
+
+@section('content')
+<h2>Edit Buku</h2>
+
+<form action="{{ route('books.update', $book->id) }}" method="POST">
     @csrf
     @method('PUT')
 
-    <input type="text" name="title" value="{{ $book->title }}" placeholder="Judul Buku" required>
-    <input type="text" name="author" value="{{ $book->author }}" placeholder="Penulis" required>
-    <input type="number" name="year" value="{{ $book->year }}" placeholder="Tahun Terbit" required>
-    <input type="number" name="stock" value="{{ $book->stock }}" placeholder="Jumlah Stok" required>
+    <div>
+        <label>Judul Buku</label><br>
+        <input 
+            type="text" 
+            name="title" 
+            placeholder="Judul Buku" 
+            value="{{ old('title', $book->title) }}" 
+        >
+        @error('title')
+            <p style="color: red;">{{ $message }}</p>
+        @enderror
+    </div>
+    <br>
+
+    <div>
+        <label>Penulis</label><br>
+        <input 
+            type="text" 
+            name="author" 
+            placeholder="Penulis" 
+            value="{{ old('author', $book->author) }}" 
+        >
+        @error('author')
+            <p style="color: red;">{{ $message }}</p>
+        @enderror
+    </div>
+    <br>
+
+    <div>
+        <label>Tahun Terbit</label><br>
+        <input 
+            type="number" 
+            name="year" 
+            placeholder="Tahun Terbit" 
+            value="{{ old('year', $book->year) }}" 
+        >
+        @error('year')
+            <p style="color: red;">{{ $message }}</p>
+        @enderror
+    </div>
+    <br>
+
+    <div>
+        <label>Jumlah Stok</label><br>
+        <input 
+            type="text" 
+            name="stock" 
+            placeholder="Jumlah Stok" 
+            value="{{ old('stock', $book->stock) }}" 
+        >
+        @error('stock')
+            <p style="color: red;">{{ $message }}</p>
+        @enderror
+    </div>
+    <br>
 
     <button type="submit">Update</button>
-
+    <a href="{{ route('books.index') }}">Batal</a>
 </form>
+@endsection
