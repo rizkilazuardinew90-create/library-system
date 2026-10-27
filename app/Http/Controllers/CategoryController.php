@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Category;
 
 class CategoryController extends Controller
 {
@@ -10,13 +11,7 @@ class CategoryController extends Controller
     {
         $title = 'Daftar Kategori';
         $description = 'Daftar Kategori Buku yang tersedia di Perpustakaan';
-        $categories = [
-            'Fiksi',
-            'Non-Fiksi',
-            'Sains',
-            'Sejarah',
-            'Literatur'
-        ];
+        $categories = Category::all();
 
         return view('categories.index', compact('title', 'description', 'categories'));
     }

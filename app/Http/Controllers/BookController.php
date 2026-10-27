@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Book;
+use App\Models\Category;
 
 class BookController extends Controller
 {
@@ -13,9 +14,10 @@ class BookController extends Controller
     public function index()
     {
         $title = 'Daftar Buku yang Tersedia';
-        $books = Book::all();
+        $books = Book::with('category')->get();
+        $categories = Category::orderBy('name')->get();
 
-        return view('books.index', compact('title', 'books'));
+        return view('books.index', compact('title', 'books', 'categories'));
     }
 
     /**
@@ -23,7 +25,8 @@ class BookController extends Controller
      */
     public function create()
     {
-        return view('books.create');
+        $categories = Category::orderBy('name')->get();
+        return view('books.create', compact('categories'));
     }
 
     /**
@@ -32,10 +35,11 @@ class BookController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'title'  => 'required|string|max:255',
-            'author' => 'required|string|max:255',
-            'year'   => 'required|integer|min:1900|max:' . date('Y'),
-            'stock'  => 'required|integer|min:1',
+            'title'         => 'required|string|max:255',
+            'author'        => 'required|string|max:255',
+            'year'          => 'required|integer|min:1900|max:' . date('Y'),
+            'category_id'   => 'required|exists:categories,id',
+            'stock'         => 'required|integer|min:1',
         ]);
 
         Book::create($validated);
@@ -60,7 +64,8 @@ class BookController extends Controller
      */
     public function edit(Book $book)
     {
-        return view('books.edit', compact('book'));
+        $categories = Category::orderBy('name')->get();
+        return view('books.edit', compact('book', 'categories'));
     }
 
     /**
@@ -72,6 +77,7 @@ class BookController extends Controller
             'title'  => 'required|string|max:255',
             'author' => 'required|string|max:255',
             'year'   => 'required|integer|min:1900|max:' . date('Y'),
+            'category_id' => 'required|exists:categories,id',
             'stock'  => 'required|integer|min:1',
         ]);
 

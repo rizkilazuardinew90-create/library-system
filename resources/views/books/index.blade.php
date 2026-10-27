@@ -17,6 +17,7 @@
         <h3>{{ $book->title }}</h3>
         <p>Author: {{ $book->author }}</p>
         <p>Year: {{ $book->year }}</p>
+        <p>Category: {{ $book->category ? $book->category->name : 'Tidak ada kategori' }}</p>
         <p>Stock: {{ $book->stock }}</p>
 
         @if($book->stock > 0)
@@ -55,6 +56,7 @@
         @enderror
     </div>
     <br>
+
     <div>
         <label>Penulis</label><br>
         <input type="text" name="author" placeholder="Penulis" value="{{ old('author') }}" required>
@@ -63,6 +65,7 @@
         @enderror
     </div>
     <br>
+
     <div>
         <label>Tahun Terbit</label><br>
         <input type="number" name="year" placeholder="Tahun Terbit" value="{{ old('year') }}" required>
@@ -71,6 +74,26 @@
         @enderror
     </div>
     <br>
+
+    <div>
+        <label for="category_id">Kategori</label><br>
+        <select name="category_id" id="category_id" required>
+            <option value="">Pilih Kategori</option>
+
+            @foreach ($categories as $category)
+                <option 
+                    value="{{ $category->id }}" @selected(old('category_id') == $category->id)
+                >
+                    {{ $category->name }}
+                </option>
+            @endforeach
+        </select>
+        @error('category_id')
+            <p style="color: red;">{{ $message }}</p>
+        @enderror
+    </div>
+    <br>
+
     <div>
         <label>Jumlah Stok</label><br>
         <input type="number" name="stock" placeholder="Jumlah Stok" value="{{ old('stock') }}" required>
