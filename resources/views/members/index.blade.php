@@ -3,7 +3,8 @@
 
 @section('content')
 
-<h2>Daftar Member</h2>
+<h2>{{ $title }}</h2>
+<h3>{{ $description }}</h3>
 
 <ul>
     @foreach ($members as $member)

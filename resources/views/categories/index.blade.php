@@ -3,7 +3,7 @@
 
 @section('content')
 
-<h2>Daftar Kategori Buku</h2>
+<h2>{{$title}}</h2>
 
 <ul>
     @foreach ($categories as $category)
