@@ -3,6 +3,12 @@
 
 @section('content')
 
+@if (auth()->user()->role === 'admin')
+    <a href="{{ route('members.index') }}">
+        Kelola Anggota
+    </a>
+@endif
+
 @if (session('success'))
     <p style="color: green;">
         {{ session('success') }}
@@ -32,12 +38,14 @@
             <a href="{{ route('books.edit', $book->id) }}">Edit</a>
 
             <!-- Form Hapus di DALAM loop foreach -->
+        @can('delete', $book)
             <form action="{{ route('books.destroy', $book->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus buku ini?')">
                 @csrf
                 @method('DELETE')
                 <button type="submit">Hapus</button>
             </form>
         </div>
+        @endcan
 
         <hr>
     </li>
