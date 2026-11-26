@@ -2,21 +2,21 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-
-    <title>
-        @yield('title')
-    </title>
+    <title>@yield('title', 'Library System')</title>
 </head>
-
 <body>
-
     <header>
-        <h1>Library System Dashboard</h1>
-        <p>Selamat datang di Sistem Informasi Perpustakaan.</p>
         <nav>
-            <a href="/books">Books</a> |
-            <a href="/categories">Categories</a> |
-            <a href="/members">Members</a>
+            <a href="{{ route('dashboard') }}">Dashboard</a> |
+            <a href="{{ route('categories.index') }}">Categories</a> |
+            <a href="{{ route('books.index') }}">Books</a> |
+            <a href="{{ route('borrowings.index') }}">Borrowings</a>
+            @if (in_array(auth()->user()?->role, ['admin', 'petugas'], true))
+                | <a href="{{ route('members.index') }}">Members</a>
+            @endif
+            @if (auth()->user()?->role === 'admin')
+                | <a href="{{ route('users.index') }}">Users</a>
+            @endif
         </nav>
 
         <hr>
@@ -28,8 +28,7 @@
 
     <footer>
         <hr>
-        <p>&copy; Rizu's Library System</p>
+        <p>© Rizu's Library System</p>
     </footer>
-
 </body>
 </html>

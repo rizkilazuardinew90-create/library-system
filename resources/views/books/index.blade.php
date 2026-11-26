@@ -3,12 +3,6 @@
 
 @section('content')
 
-@if (auth()->user()->role === 'admin')
-    <a href="{{ route('members.index') }}">
-        Kelola Anggota
-    </a>
-@endif
-
 @if (session('success'))
     <p style="color: green;">
         {{ session('success') }}
@@ -17,7 +11,9 @@
 
 <h2>{{ $title }}</h2>
 
-<ul>
+<a href="{{ route('books.create') }}">+ Tambah Buku</a>
+
+<ul style="margin-top: 12px;">
     @foreach ($books as $book)
     <li>
         <h3>{{ $book->title }}</h3>
@@ -32,90 +28,22 @@
             <p style="color: red;">Stok habis.</p>
         @endif
 
-        <!-- Tombol Aksi CRUD Per Buku (Show, Edit, Delete) -->
         <div style="display: flex; gap: 10px; align-items: center;">
             <a href="{{ route('books.show', $book->id) }}">Detail</a>
             <a href="{{ route('books.edit', $book->id) }}">Edit</a>
 
-            <!-- Form Hapus di DALAM loop foreach -->
-        @can('delete', $book)
-            <form action="{{ route('books.destroy', $book->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus buku ini?')">
-                @csrf
-                @method('DELETE')
-                <button type="submit">Hapus</button>
-            </form>
+            @can('delete', $book)
+                <form action="{{ route('books.destroy', $book->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus buku ini?')">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit">Hapus</button>
+                </form>
+            @endcan
         </div>
-        @endcan
 
         <hr>
     </li>
     @endforeach
 </ul>
-
-<h3>Tambah Buku Baru</h3>
-<form action="{{ route('books.store') }}" method="POST">
-    @csrf
-
-    <div>
-        <label>Judul Buku</label><br>
-        <input type="text" name="title" placeholder="Judul Buku" value="{{ old('title') }}" required>
-        @error('title')
-            <p style="color: red;">{{ $message }}</p>
-        @enderror
-    </div>
-    <br>
-
-    <div>
-        <label>Penulis</label><br>
-        <input type="text" name="author" placeholder="Penulis" value="{{ old('author') }}" required>
-        @error('author')
-            <p style="color: red;">{{ $message }}</p>
-        @enderror
-    </div>
-    <br>
-
-    <div>
-        <label>Tahun Terbit</label><br>
-        <input type="number" name="year" placeholder="Tahun Terbit" value="{{ old('year') }}" required>
-        @error('year')
-            <p style="color: red;">{{ $message }}</p>
-        @enderror
-    </div>
-    <br>
-
-    <div>
-        <label for="category_id">Kategori</label><br>
-        <select name="category_id" id="category_id" required>
-            <option value="">Pilih Kategori</option>
-
-            @foreach ($categories as $category)
-                <option 
-                    value="{{ $category->id }}" @selected(old('category_id') == $category->id)
-                >
-                    {{ $category->name }}
-                </option>
-            @endforeach
-        </select>
-        @error('category_id')
-            <p style="color: red;">{{ $message }}</p>
-        @enderror
-    </div>
-    <br>
-
-    <div>
-        <label>Jumlah Stok</label><br>
-        <input type="number" name="stock" placeholder="Jumlah Stok" value="{{ old('stock') }}" required>
-        @error('stock')
-            <p style="color: red;">{{ $message }}</p>
-        @enderror
-    </div>
-    <br>
-    <button type="submit">Tambah</button>
-</form>
-
-<form action="{{ route('logout') }}" method="POST">
-    @csrf
-    <button type="submit">Logout</button>
-</form>
 
 @endsection

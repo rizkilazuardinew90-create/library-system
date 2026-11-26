@@ -8,10 +8,11 @@
     @csrf
 
     <div>
-        <label>Judul Buku</label><br>
+        <label for="title">Judul Buku</label><br>
         <input 
             type="text" 
             name="title" 
+            id="title"
             placeholder="Judul Buku" 
             value="{{ old('title') }}" 
         >
@@ -22,10 +23,11 @@
     <br>
 
     <div>
-        <label>Penulis</label><br>
+        <label for="author">Penulis</label><br>
         <input 
             type="text" 
             name="author" 
+            id="author"
             placeholder="Penulis" 
             value="{{ old('author') }}" 
         >
@@ -36,10 +38,11 @@
     <br>
 
     <div>
-        <label>Tahun Terbit</label><br>
+        <label for="year">Tahun Terbit</label><br>
         <input 
             type="number" 
             name="year" 
+            id="year"
             placeholder="Tahun Terbit" 
             value="{{ old('year') }}" 
         >
@@ -70,10 +73,12 @@
     <br>
 
     <div>
-        <label>Jumlah Stok</label><br>
+        <label for="stock">Jumlah Stok</label><br>
         <input 
-            type="text" 
+            type="number" 
             name="stock" 
+            id="stock"
+            min="1"
             placeholder="Jumlah Stok" 
             value="{{ old('stock') }}" 
         >
